@@ -109,11 +109,18 @@ test('目次だけ下線を表示し、本文リンクは緩やかにフェー�
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await expect(link).toHaveCSS('background-image', 'none');
   await expect(link).toHaveCSS('transition-duration', '0.4s');
+  const supportsHover = await page.evaluate(() => matchMedia('(hover: hover)').matches);
   await link.hover();
+  await expect(link).toHaveCSS('opacity', supportsHover ? '0.8' : '1');
+  // Keyboard focus remains available even when the primary input is touch.
+  await page.keyboard.press('Tab');
+  await link.focus();
+  await expect(link).toBeFocused();
   await expect(link).toHaveCSS('opacity', '0.8');
   await expect(link).toHaveCSS('text-decoration-line', 'none');
   const navigationLink = page.getByRole('navigation').getByRole('link').first();
-  await navigationLink.hover();
+  if (supportsHover) await navigationLink.hover();
+  else await navigationLink.focus();
   await expect(navigationLink).toHaveCSS('background-size', '100% 1px');
   await expect(navigationLink).toHaveCSS('opacity', '1');
 });
