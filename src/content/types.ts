@@ -8,7 +8,6 @@ export interface Content {
   type: ContentType;
   order: number;
   title: string;
-  mock: boolean;
   summary?: string;
   links?: ContentLink[];
   bodyFile: string;

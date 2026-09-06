@@ -61,3 +61,5 @@ prefers-reduced-motion時はCSSとJS双方で全カードを即時表示し、�
 静的title・description・OGPはindex.html。公開名はKawakami Shunki（川上駿季）。公開手順は[deployment.md](deployment.md)を参照。
 
 左の目次はpage-enterで読み込み時にフェードする。aria-currentの項目はhover時もaccentを維持。トップ下に1pxの罫線を置き、本文との間隔は32pxとする。
+
+目次の現在位置表示は1024px以上のみ。1024px未満（SP・タブレットの上部目次）では全項目を未選択とし、aria-currentも付けない。幅の変更時にも即座に更新する。

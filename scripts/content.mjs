@@ -10,7 +10,7 @@ const parser = unified().use(remarkParse).use(remarkGfm);
 const reserved = new Set(['main', 'top', 'navigation', 'related-links', 'card-designs', 'design-heading']);
 const types = new Set(['profile', 'career', 'skills', 'project', 'about']);
 const control = /[\u0000-\u0020\u007f-\u009f\\]/;
-const fields = new Set(['id', 'type', 'order', 'title', 'mock', 'summary', 'links', 'skills']);
+const fields = new Set(['id', 'type', 'order', 'title', 'summary', 'links', 'skills']);
 const nonempty = value => typeof value === 'string' && value.trim().length > 0;
 
 function linkUrl(href, ids) {
@@ -42,7 +42,7 @@ function imageUrl(href, alt, imagesDirectory) {
   if (real.startsWith('..') || isAbsolute(real)) throw new Error('image: images外への参照は禁止');
 }
 
-export function compileContent(sources, { release = false, imagesDirectory = 'public/images' } = {}) {
+export function compileContent(sources, { imagesDirectory = 'public/images' } = {}) {
   if (!sources.length) throw new Error('content/: 原稿が0件です');
   const records = sources.map(({ name, text }) => {
     try {
@@ -57,12 +57,10 @@ export function compileContent(sources, { release = false, imagesDirectory = 'pu
       if (!types.has(data.type)) throw new Error('type: 未知または欠落');
       if (!Number.isSafeInteger(data.order)) throw new Error('order: 安全な整数が必要');
       if (!nonempty(data.title)) throw new Error('title: 空でない文字列が必要');
-      if (typeof data.mock !== 'boolean') throw new Error('mock: booleanが必要');
       if ('summary' in data && !nonempty(data.summary)) throw new Error('summary: 空でない文字列が必要');
       if ('skills' in data && (data.type !== 'skills' || !Array.isArray(data.skills) || data.skills.some(skill => !skill || typeof skill !== 'object' || Object.keys(skill).some(key => !['name', 'level'].includes(key)) || !nonempty(skill.name) || !Number.isFinite(skill.level) || skill.level < 0 || skill.level > 100) || new Set(data.skills.map(skill => skill.name)).size !== data.skills.length)) throw new Error('skills: 重複のないnameと0〜100のlevelが必要（skills型のみ）');
       if ('links' in data && (!Array.isArray(data.links) || data.links.some(link => !link || typeof link !== 'object' || Array.isArray(link) || Object.keys(link).some(key => !['label', 'href'].includes(key)) || !nonempty(link.label) || !nonempty(link.href)))) throw new Error('links: label/hrefだけを持つ配列が必要');
       if (!match[2].trim()) throw new Error('body: 空本文は禁止');
-      if (release && data.mock) throw new Error('mock: 公開用ビルドではモックを拒否');
       return { name, content: { ...data, body: match[2].trim() } };
     } catch (error) { throw new Error(name + ': ' + error.message, { cause: error }); }
   });

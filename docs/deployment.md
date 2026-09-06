@@ -44,11 +44,11 @@ docsは実装資料の保存場所であり、Pagesの公開ディレクトリ�
 - ActionsのバージョンまたはコミットSHAは導入時に確認して固定する。
 
 権限・アーティファクト・ジョブの接続は [GitHub公式カスタムワークフロー](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) を参照。
-ワークフローは .github/workflows/deploy.yml に実装済み。push / pull_requestで検証し、公開はリポジトリのdefault_branchへのpushまたはそのブランチでの手動実行に限定する。configure-pagesのbase_pathをVITE_BASE_PATHへ渡して通常ビルドと本番E2Eを実施する。2026-09-07からモックのまま試験公開できるようbuildを使用する。mock属性は書き換えない。本原稿へ差し替えたらPages用ビルドをbuild:releaseへ変更する。
+ワークフローは .github/workflows/deploy.yml に実装済み。push / pull_requestで検証し、公開はリポジトリのdefault_branchへのpushまたはそのブランチでの手動実行に限定する。configure-pagesのbase_pathをVITE_BASE_PATHへ渡して通常ビルドと本番E2Eを実施する。原稿の完成度にかかわらずbuildを使用し、事実確認と仮文言の除去は公開前に手動で行う。
 
 ## 本原稿の正式公開前チェック
 
-- [verification.md](verification.md)の公開条件を満たす。原稿のmockは全件false、仮URL・仮文言を除去する。
+- [verification.md](verification.md)の公開条件を満たす。仮URL・仮文言を除去する。
 - 経歴、画像、個人情報、連絡先、共同制作の担当範囲を公開してよいか確認する。
 - デモ・ソース・公開プロフィールへのリンクをブラウザーで開き、閲覧者の認証状態でも到達できるか確認する。
 - index.htmlのtitle・description・共通OGPを本内容へ変更する。OGP画像と公開URLはbaseを含む正しい絶対HTTPS URLにする。
@@ -56,14 +56,14 @@ docsは実装資料の保存場所であり、Pagesの公開ディレクトリ�
 - distへ秘密情報や不要なファイルを含めない。Viteでクライアントへ組み込む環境変数に秘密を置かない。
 - 公開対象のコミット、成果物、依存バージョンを記録する。前回正常版があれば復旧用に識別できるようにする。
 
-mock拒否は自動検証、事実確認・到達性・公開範囲は人による確認と分ける。
+構造・URL・画像は自動検証し、事実確認・到達性・公開範囲は人による確認と分ける。
 SNSプレビューで本文や個別作例の動的OGPまで保証しない。
 
 ## 実装後の公開手順
 
 1. 対象リポジトリ、公開ブランチ、公開URL、baseを確定する。
 2. 確定したNode・pnpm環境でpnpm install --frozen-lockfileを実行する。
-3. lint、型検査、原稿テスト、E2E、buildを実行する。本原稿の正式公開時はbuild:releaseを使用する。
+3. lint、型検査、原稿テスト、E2E、buildを実行する。
 4. pnpm run previewで公開時と同じbase配下のdistを確認する。Pages固有の配信確認は公開後にも行う。
 5. PagesのSourceとワークフローを設定し、正式な公開作業の依頼範囲に従って対象ブランチのpushまたは手動実行で公開する。
 6. Actionsの成功と公開URLを確認し、トップ、#idの直接アクセス、更新、戻る・進む、JS/CSS/画像、印刷、外部デモを確認する。

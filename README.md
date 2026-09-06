@@ -4,7 +4,7 @@ React・TypeScript・Tailwind CSS・Viteで実装した、Markdown更新型の�
 黒と蛍光緑のタイムライン、スクロール初回演出、スキルバー、ハッシュ移動・履歴、動きの抑制、検索・印刷に対応しています。
 
 **モック版の実装です。** 公開名は本人指定、経歴・実績・スキル値はモックです。
-`content/` の原稿と画像・リンクを手動で差し替えてください。`build:release` はモックを検出すると停止します。
+`content/` の原稿と画像・リンクを手動で差し替えてください。原稿の完成度はフラグで管理せず、公開前に内容を確認します。
 
 ## 起動
 
@@ -23,7 +23,7 @@ pnpm run dev
 1. `content/*.md` のtitle・summary・linksと区切り線以下のMarkdown本文を編集します。公開後のidは維持します。
 2. 画像は `public/images/` へ置き、原稿では `/images/ファイル名` と参照します。
 3. `pnpm run content:build` を実行し、ページを再読み込みします。
-4. 事実確認と仮文言の除去後に各原稿の `mock` をfalseへ変更します。
+4. 公開前に事実確認と仮文言の除去を行います。
 
 形式の詳細と雛形は [原稿ガイド](docs/content-authoring.md) を参照してください。
 生成JSONはメタデータとMarkdown参照のみです。本文は独立した.mdとして読み込みます。生成物は手編集・コミット不要です。
@@ -61,7 +61,7 @@ pnpm run test:e2e --project chromium --project webkit --project android --projec
 ## 公開準備
 
 GitHub Pages用の [.github/workflows/deploy.yml](.github/workflows/deploy.yml) を用意しています。
-現在のActionsはモックのまま試験公開できるよう `pnpm run build` を使います。本原稿の準備後は `pnpm run build:release` で確認し、ActionsのPages用ビルドも同コマンドへ変更してください。
+Actions・ローカルとも `pnpm run build` に統一しています。公開前の原稿確認は手動で行います。
 公開URL・OGP画像は未確定のため、架空の値を設定していません。
 
 Pagesが返すbase_pathをビルドへ渡すので、リポジトリ名をUIへ埋め込む必要はありません。

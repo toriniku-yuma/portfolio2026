@@ -3,7 +3,6 @@ id: profile
 type: profile
 order: 10
 title: プロフィール
-mock: true
 summary: アイデアを、触れられるかたちに。
 ---
 ### 川上駿季 / Kawakami Shunki

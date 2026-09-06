@@ -11,7 +11,7 @@
 - [原稿契約](content-authoring.md)の型、検証、JSON生成を実装する。原稿の雛形から5typeのモックを用意し、本文は独立したMarkdown、JSONはメタデータとbodyFile参照だけにする。
 - Header、Navigation、本文、RelatedLinksを責務で分離する。TSX関数制限は [architecture.md](architecture.md) を守る。
 
-終了条件：クリーン環境からビルドでき、5typeの原稿を表示し、原稿テスト9件を確認できる。
+終了条件：クリーン環境からビルドでき、5typeの原稿を表示し、原稿テスト8件を確認できる。
 
 ## 2. 体験
 
@@ -47,17 +47,16 @@
 | --- | --- |
 | pnpm install | 初回導入・依存更新時にpnpm-lock.yamlを生成・更新 |
 | pnpm install --frozen-lockfile | 作成済みpnpm-lock.yamlを変更せず依存導入。CI・再現確認で利用 |
-| pnpm run content:build | 開発用の原稿検証・メタデータとMarkdown生成。mockは警告 |
+| pnpm run content:build | 開発用の原稿検証・メタデータとMarkdown生成 |
 | pnpm run dev | 原稿生成 → Vite開発サーバー |
 | pnpm run lint | TS/TSXの静的チェック |
 | pnpm run typecheck | TypeScriptの型検査 |
 | pnpm run test:content | 原稿スキーマのテスト |
 | pnpm run test:e2e | E2E。サーバー起動条件を設定へ記載 |
 | pnpm run build | 原稿生成 → 型検査 → Viteビルド |
-| pnpm run build:release | mock拒否の原稿生成 → 型検査 → Viteビルド |
 | pnpm run preview | 生成済みdistを確認 |
 
-build:releaseの後続で開発用生成へ戻さない。検証失敗時は後続処理を停止する。
+検証失敗時は後続処理を停止する。
 開発中に原稿を編集したらcontent:build後にページを再読み込みする。
 実装した時点でREADMEへ実際のコマンドを記載し、本表と一致させる。
 最初から複雑なCI基盤は作らず、上記検証が揃ったら同じコマンドをCIでも利用する。

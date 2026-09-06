@@ -3,7 +3,6 @@ id: project-sample
 type: project
 order: 40
 title: 作例：アイデアをかたちに
-mock: true
 summary: 課題から考え、画面へ落とし込む。
 links:
   - label: デモ

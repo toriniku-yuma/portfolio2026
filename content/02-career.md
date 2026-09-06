@@ -3,7 +3,6 @@ id: career-01
 type: career
 order: 20
 title: これまでの歩み
-mock: true
 summary: 経験と学びを、次のものづくりへ。
 ---
 ### つくることから始める

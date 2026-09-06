@@ -4,8 +4,7 @@ import { compileContent } from './content.mjs';
 try {
   const names = (await readdir('content')).filter(name => name.endsWith('.md')).sort();
   const sources = await Promise.all(names.map(async name => ({ name, text: await readFile('content/' + name, 'utf8') })));
-  const content = compileContent(sources, { release: process.argv.includes('--release') });
-  for (const item of content) if (item.mock) console.warn('モック原稿: ' + item.id);
+  const content = compileContent(sources);
   await mkdir('src/generated/bodies', { recursive: true });
   const bodyFiles = new Set(content.map(item => item.id + '.md'));
   for (const name of await readdir('src/generated/bodies')) {

@@ -37,7 +37,7 @@ jobs:
         id: pages
         if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
-      - name: Build for Pages (allow mock content)
+      - name: Build for Pages
         if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
         run: pnpm run build
         env:

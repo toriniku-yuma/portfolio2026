@@ -3,7 +3,6 @@ id: contact
 type: about
 order: 50
 title: このサイト・連絡先
-mock: true
 summary: ここから、次のつながりへ。
 ---
 ### この場所について

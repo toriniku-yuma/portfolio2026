@@ -12,7 +12,7 @@ function hashId(hash: string) {
 }
 
 export function useDisplay() {
-  const [selected, setSelected] = useState(hashId(location.hash) || '');
+  const [selected, setSelected] = useState('');
   const seen = useRef(new Set<string>());
   const navigating = useRef(false);
   const finishAnimation = useCallback((event: AnimationEvent<HTMLElement>) => {
@@ -63,6 +63,11 @@ export function useDisplay() {
 
     const updateSelection = () => {
       scrollFrame = 0;
+      if (!matchMedia('(min-width: 64rem)').matches) {
+        setSelected('');
+        return;
+      }
+
       const readingLine = Math.min(200, innerHeight * 0.25);
       let currentId = '';
 

@@ -3,7 +3,6 @@ id: skills
 type: skills
 order: 30
 title: できること
-mock: true
 summary: 道具と、その先にある使い方。
 # 以下はデザイン確認用の自己評価値。公開前に実際の技術名・数値へ変更。
 skills:

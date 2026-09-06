@@ -6,7 +6,7 @@ import { resolve, join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { compileContent } from '../scripts/content.mjs';
 
-const sample = (extra = '', body = '本文です。', id = 'sample', type = 'profile') => ({ name: id + '.md', text: '---\nid: ' + id + '\ntype: ' + type + '\norder: 1\ntitle: サンプル\nmock: false\n' + extra + '\n---\n' + body });
+const sample = (extra = '', body = '本文です。', id = 'sample', type = 'profile') => ({ name: id + '.md', text: '---\nid: ' + id + '\ntype: ' + type + '\norder: 1\ntitle: サンプル\n' + extra + '\n---\n' + body });
 test('C01/C03 全type、任意項目、本文保持、同orderのASCII整列', () => {
   const records = ['profile', 'career', 'skills', 'project', 'about'].map(type => sample('summary: 概要\nlinks: []', '### 小見出し\n本文', type, type));
   const result = compileContent(records);
@@ -18,7 +18,7 @@ test('C02 必須・型・未知項目・重複キーを拒否', () => {
   for (const [from, to] of [
     ['id: sample', ''], ['type: profile', 'type: contact'], ['order: 1', 'order: 1.5'],
     ['order: 1', 'order: 9007199254740992'], ['title: サンプル', 'title: "  "'],
-    ['mock: false', 'mock: "false"'], ['mock: false', ''], ['type: profile', ''],
+    ['type: profile', ''],
     ['order: 1', 'order: "1"'], ['order: 1', 'order: 1\norder: 2'],
   ]) assert.throws(() => compileContent([{ ...sample(), text: sample().text.replace(from, to) }]), /sample.md:/);
   for (const extra of ['other: true', 'summary: ""', 'links: nope', 'links: [{ label: test, href: "https://example.com", extra: true }]', 'links: [{ label: "", href: "https://example.com" }]']) {
@@ -50,12 +50,6 @@ test('C06 HTML/空本文/空原稿/壊れたYAMLと見出しを拒否、コー�
   assert.throws(() => compileContent([]), /0件/);
   assert.throws(() => compileContent([sample('summary: [')]), /YAML:/);
   assert.equal(compileContent([sample('', '```html\n<script>literal</script>\n```')]).length, 1);
-});
-test('C07 開発mock許可・公開mock拒否', () => {
-  const mock = { ...sample(), text: sample().text.replace('mock: false', 'mock: true') };
-  assert.equal(compileContent([mock]).length, 1);
-  assert.throws(() => compileContent([mock], { release: true }), /公開用/);
-  assert.equal(compileContent([sample()], { release: true }).length, 1);
 });
 test('C08 CLI失敗は非ゼロ、成功済みJSONを書き換えない', () => {
   const directory = mkdtempSync(join(tmpdir(), 'portfolio-content-'));

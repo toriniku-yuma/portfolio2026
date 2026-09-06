@@ -6,7 +6,7 @@
 
 - `pnpm run build`：原稿検証・Markdownとメタデータ生成・型検査・本番ビルド。
 - `pnpm run lint`：ESLint、TSX/JSXの1関数規約。
-- `pnpm run test:content`：C01〜C09。必須項目・全type・安定整列・予約ID・危険URL・画像実在・HTML拒否・公開時mock拒否・失敗時の非ゼロ終了・生成JSONに本文なし・Markdown参照・スキル0〜100検証。
+- `pnpm run test:content`：8件（C07廃止）。必須項目・全type・安定整列・予約ID・危険URL・画像実在・HTML拒否・失敗時の非ゼロ終了・生成JSONに本文なし・Markdown参照・スキル0〜100検証。
 - `pnpm run test:e2e`：下表。StrictModeの開発サーバーとE2E_PREVIEW=1の本番プレビューを区別して実行。
 
 | 条件 | 確認する結果 |
@@ -33,9 +33,9 @@ PlaywrightのChromium / Firefox / WebKit、Android相当・iPhone相当で確認
 
 ## 公開前
 
-モックでの試験公開は通常のbuildとPagesのbaseでのE2Eを使用する。build:releaseのモック拒否は維持し、以下は本原稿の正式公開条件とする。
+公開はbuildとPagesのbaseでのE2Eを使用する。以下の原稿確認は手動で実施する。
 
-本文・スキル数値・実績・画像・リンクを実データへ差し替え、mock:falseとしたbuild:releaseを検証する。GitHub Pagesの実際のbaseで画像・直接ハッシュ・更新・履歴・リンク到達を確認する。公開後の配信性能はローカル実測と分ける。
+本文・スキル数値・実績・画像・リンクを実データへ差し替え、buildを検証する。GitHub Pagesの実際のbaseで画像・直接ハッシュ・更新・履歴・リンク到達を確認する。公開後の配信性能はローカル実測と分ける。
 
 検証記録は[一覧](verification-results/README.md)を参照。各記録は実施時点の実装に対する結果であり、現在の仕様の代わりにはしない。
 
@@ -44,3 +44,5 @@ PlaywrightのChromium / Firefox / WebKit、Android相当・iPhone相当で確認
 目次の読み込みanimation-name、選択項目をhoverした後の実際の色、トップのborder-bottomと32pxのmargin-bottomをE2Eで検証する。スタイル移動後もカード・リンク・reduce・幅別表示を再確認する。
 
 Tailwind移行時は依存・設定・CI・生成物に旧スタイル処理が残らないことを確認する。スタイルのcodegenなしでbuild・dev・型検査が実行でき、既存の表示・動作テストが通ること。
+
+目次の現在位置表示は1024px以上のみ。1024px未満（SP・タブレットの上部目次）では全項目を未選択とし、aria-currentも付けない。幅の変更時にも即座に更新する。

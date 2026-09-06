@@ -126,6 +126,7 @@ test('目次だけ下線を表示し、本文リンクは緩やかにフェー�
 });
 
 test('スクロールで目次が追従し、末尾・逆方向・先頭でも更新する', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('./');
   const selected = page.locator('nav a[aria-current="location"]');
@@ -140,6 +141,22 @@ test('スクロールで目次が追従し、末尾・逆方向・先頭でも�
   await page.evaluate(() => scrollTo(0, 0));
   await expect(selected).toHaveCount(0);
   expect(new URL(page.url()).hash).toBe('');
+});
+
+test('SPの目次は未選択、PCへの幅変更で現在位置を選択する', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 375, height: 900 });
+  await page.goto('./#career-01');
+  const selected = page.locator('nav a[aria-current="location"]');
+  await expect(page.locator('#career-01')).toBeInViewport();
+  await expect(selected).toHaveCount(0);
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await page.locator('#skills').evaluate(element => element.scrollIntoView());
+  await expect(selected).toHaveAttribute('href', '#skills');
+  await page.setViewportSize({ width: 1023, height: 900 });
+  await expect(selected).toHaveCount(0);
+  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+  await expect(selected).toHaveCount(0);
 });
 
 test('リンク移動は即時ジャンプせず滑らかに移動する', async ({ page }) => {
