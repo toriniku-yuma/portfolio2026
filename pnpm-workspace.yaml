@@ -1,0 +1,4 @@
+allowBuilds:
+  node-bin-setup: true
+  node: true
+  esbuild: true

@@ -1,0 +1,21 @@
+ WARN  Unsupported engine: wanted: {"node":">=26.8.1 <27"} (current: {"node":"v24.14.0","pnpm":"10.28.2"})
+
+> portfolio2026@0.1.0 test:content H:\programing\portfolio2026
+> node --test tests/content.test.mjs
+
+✔ C01/C03 全type、任意項目、本文保持、同orderのASCII整列 (16.4117ms)
+✔ C02 必須・型・未知項目・重複キーを拒否 (5.1547ms)
+✔ C03 重複・不正・予約ID (2.2783ms)
+✔ C04 全リンク経路の危険URLを拒否 (18.2099ms)
+✔ C05 HTTPS/mailto/anchor/images・画像参照、欠落・親パス・alt (7.9584ms)
+✔ C06 HTML/空本文/空原稿/壊れたYAMLと見出しを拒否、コードは許可 (2.5927ms)
+✔ C07 開発mock許可・公開mock拒否 (0.851ms)
+✔ C08 CLI失敗は非ゼロ、成功済みJSONを書き換えない (867.5807ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1377.3546

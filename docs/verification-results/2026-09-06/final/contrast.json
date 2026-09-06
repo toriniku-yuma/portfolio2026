@@ -1,0 +1,41 @@
+{
+  "palette": {
+    "canvas": "#080a08",
+    "panel": "#111611",
+    "ink": "#f2f5f2",
+    "muted": "#b7c2b7",
+    "accent": "#6f3"
+  },
+  "pairs": [
+    {
+      "foreground": "ink",
+      "background": "panel",
+      "ratio": 16.6728050267619
+    },
+    {
+      "foreground": "muted",
+      "background": "panel",
+      "ratio": 9.953805716148327
+    },
+    {
+      "foreground": "accent",
+      "background": "panel",
+      "ratio": 13.880587384890577
+    },
+    {
+      "foreground": "canvas",
+      "background": "accent",
+      "ratio": 15.054902111413611
+    },
+    {
+      "foreground": "accent",
+      "background": "canvas",
+      "ratio": 15.054902111413611
+    },
+    {
+      "foreground": "muted",
+      "background": "canvas",
+      "ratio": 10.795909894689494
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "artifacts": [
+    {
+      "path": "dist\\assets\\index-DbA1yhc4.js",
+      "bytes": 375919,
+      "gzipBytes": 116883,
+      "sha256": "3b02f9250b46e9f635ddfb16abbe6af337d1b044f74e19b56c6ecc09a88fe1c7"
+    },
+    {
+      "path": "dist\\assets\\index-Drn7ukIL.css",
+      "bytes": 26659,
+      "gzipBytes": 7581,
+      "sha256": "62d40ec4f0493dce45df884c4a4f61c3689bcbf23d13688f26eaab5c360c863e"
+    },
+    {
+      "path": "dist\\favicon.svg",
+      "bytes": 204,
+      "gzipBytes": 178,
+      "sha256": "4da54a7ac6e244543a13063b15bca9fabbe4abdb06ec2c2f32b775a7254af84d"
+    },
+    {
+      "path": "dist\\images\\project-preview.svg",
+      "bytes": 1164,
+      "gzipBytes": 547,
+      "sha256": "e4a9cbfda72010b30732bf170cfaa956e611e636533a913d3a26fa053e70bab2"
+    },
+    {
+      "path": "dist\\index.html",
+      "bytes": 1208,
+      "gzipBytes": 681,
+      "sha256": "c30b57670b2618cad8a6d60babbaad470789e954ae0ea06112fd5923b2318a73"
+    }
+  ],
+  "totalBytes": 405154,
+  "totalGzipBytes": 125870
+}

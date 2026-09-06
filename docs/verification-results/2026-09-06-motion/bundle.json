@@ -1,0 +1,42 @@
+{
+  "artifacts": [
+    {
+      "path": "dist\\assets\\index-B72plLkc.css",
+      "bytes": 25900,
+      "gzipBytes": 7296,
+      "sha256": "6c012e1f853a7f301101b1f2b43ee1b931dd4dcbfd853df593de105dd1ddad60"
+    },
+    {
+      "path": "dist\\assets\\index-CSgef7CI.js",
+      "bytes": 379138,
+      "gzipBytes": 117770,
+      "sha256": "f0a7c3c663c484598586c5e48d7a1fffdac56d35b1b8eb9805ba3fb65623f099"
+    },
+    {
+      "path": "dist\\favicon.svg",
+      "bytes": 204,
+      "gzipBytes": 178,
+      "sha256": "4da54a7ac6e244543a13063b15bca9fabbe4abdb06ec2c2f32b775a7254af84d"
+    },
+    {
+      "path": "dist\\images\\project-preview.svg",
+      "bytes": 1157,
+      "gzipBytes": 543,
+      "sha256": "a09c3cadfe6826db5777d80751ae6c9647256941abe999bde4ecbbbc1ec448ab"
+    },
+    {
+      "path": "dist\\index.html",
+      "bytes": 1177,
+      "gzipBytes": 649,
+      "sha256": "314d1d7dbf316d9d822dd79fd8cee6fea2bae848479992d1daa439b6d07444c1"
+    },
+    {
+      "path": "dist\\robots.txt",
+      "bytes": 24,
+      "gzipBytes": 44,
+      "sha256": "a02fa07867bb5868c5f726f6620178daf8e0d0bcb8f5c1e2693ba72f0aec1fbb"
+    }
+  ],
+  "totalBytes": 407600,
+  "totalGzipBytes": 126480
+}

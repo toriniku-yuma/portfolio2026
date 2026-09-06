@@ -1,0 +1,110 @@
+@import "tailwindcss" source("../");
+
+@theme {
+  --color-canvas: #080a08;
+  --color-panel: #121812;
+  --color-ink: #f2f5f2;
+  --color-muted: #a7b5a7;
+  --color-accent: #88fa4e;
+  --color-line: #354235;
+  --font-body: "Segoe UI", "Yu Gothic", sans-serif;
+  --font-mono: ui-monospace, Consolas, monospace;
+  --text-xs--line-height: inherit;
+  --text-sm--line-height: inherit;
+  --text-lg--line-height: inherit;
+  --text-2xl--line-height: inherit;
+  --animate-page-enter: page-enter 750ms ease-out both;
+  --animate-section-enter: section-enter 750ms cubic-bezier(.2, .7, .2, 1) both;
+  --animate-skill-fill: skill-fill 700ms cubic-bezier(.2, .7, .2, 1) both;
+  --animate-asterisk-turn: asterisk-turn 1400ms ease-out both;
+}
+
+@layer base {
+  html {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    scroll-padding-top: 32px;
+  }
+  body { line-height: 1.8; overflow-wrap: anywhere; }
+  svg { flex-shrink: 0; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 5px; }
+}
+
+/* Underline motion is reserved for the table of contents. */
+@layer components {
+  .navigation-link-motion {
+    text-decoration: none;
+    background-image: linear-gradient(90deg, transparent, currentColor 18%, currentColor);
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    box-decoration-break: clone;
+    transition: background-size 400ms ease-in-out, color 400ms ease-in-out;
+  }
+  .navigation-link-motion:hover, .navigation-link-motion:focus-visible { background-size: 100% 1px; }
+
+  .hero-art::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: -20px;
+    z-index: -1;
+    background-image: radial-gradient(circle, var(--color-muted) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: .38;
+    mask-image: radial-gradient(ellipse, black 15%, transparent 72%);
+    animation: dot-drift 8s linear infinite;
+  }
+  @media (min-width: 48rem) { .hero-art::before { inset: -70px; } }
+
+  /* Markdown has no hand-authored JSX nodes, so keep its typography together. */
+  .markdown { font-size: 14px; line-height: 1.95; color: var(--color-muted); overflow-wrap: anywhere; }
+  .markdown > * + * { margin-top: 20px; }
+  .markdown h3, .markdown h4 { color: var(--color-ink); font-weight: 500; font-size: 16px; margin-top: 32px; margin-bottom: 12px; }
+  .markdown > :first-child { margin-top: 0; }
+  .markdown a { color: var(--color-accent); }
+  .markdown strong { color: var(--color-ink); font-weight: 600; }
+  .markdown ul, .markdown ol { padding-left: 20px; list-style: revert; }
+  .markdown li + li { margin-top: 8px; }
+  .markdown blockquote { border-left: 2px solid var(--color-accent); padding-left: 20px; }
+  .markdown img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; display: block; }
+  .markdown table { border-collapse: collapse; width: 100%; min-width: 420px; }
+  .markdown th, .markdown td { border-bottom: 1px solid var(--color-line); padding: 12px; text-align: left; }
+  .markdown th { color: var(--color-ink); }
+  .markdown pre { background: var(--color-panel); padding: 20px; font-family: var(--font-mono); font-size: 13px; }
+  .markdown :not(pre) > code { background: var(--color-panel); padding-inline: 4px; color: var(--color-ink); }
+}
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes section-enter {
+  from { opacity: 0; transform: translateY(36px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes skill-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes asterisk-turn { from { transform: rotate(-45deg) scale(.85); } to { transform: rotate(0) scale(1); } }
+@keyframes dot-drift { to { background-position: 48px 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+@media print {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html {
+    --color-canvas: #fff;
+    --color-panel: #f3f3f3;
+    --color-ink: #111;
+    --color-muted: #333;
+    --color-accent: #174417;
+    --color-line: #999;
+    background: white;
+    color: black;
+  }
+  nav, aside, button, [data-decoration] { display: none !important; }
+  article { opacity: 1 !important; break-inside: avoid; }
+  a { color: inherit !important; }
+}

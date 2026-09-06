@@ -1,0 +1,42 @@
+{
+  "artifacts": [
+    {
+      "path": "dist\\assets\\index-C7CWpVu9.js",
+      "bytes": 379710,
+      "gzipBytes": 118062,
+      "sha256": "b283f04f811b5dcec16b02756ae4a507800c08d95b91f65ee0055ab40c3cc6eb"
+    },
+    {
+      "path": "dist\\assets\\index-CUNRBBZA.css",
+      "bytes": 26784,
+      "gzipBytes": 7281,
+      "sha256": "679bd4aab3a3aaf811207aeb7552e9f0de4875aaca876ee09346de76e4a42bda"
+    },
+    {
+      "path": "dist\\favicon.svg",
+      "bytes": 204,
+      "gzipBytes": 178,
+      "sha256": "4da54a7ac6e244543a13063b15bca9fabbe4abdb06ec2c2f32b775a7254af84d"
+    },
+    {
+      "path": "dist\\images\\project-preview.svg",
+      "bytes": 1157,
+      "gzipBytes": 543,
+      "sha256": "a09c3cadfe6826db5777d80751ae6c9647256941abe999bde4ecbbbc1ec448ab"
+    },
+    {
+      "path": "dist\\index.html",
+      "bytes": 1177,
+      "gzipBytes": 651,
+      "sha256": "a8da8e060e48c042493532b21ec3a8f822df1e6ab42f77ec0bf1a7e4bc474a36"
+    },
+    {
+      "path": "dist\\robots.txt",
+      "bytes": 24,
+      "gzipBytes": 44,
+      "sha256": "a02fa07867bb5868c5f726f6620178daf8e0d0bcb8f5c1e2693ba72f0aec1fbb"
+    }
+  ],
+  "totalBytes": 409056,
+  "totalGzipBytes": 126759
+}

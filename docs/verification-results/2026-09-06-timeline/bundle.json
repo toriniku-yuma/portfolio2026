@@ -1,0 +1,42 @@
+{
+  "artifacts": [
+    {
+      "path": "dist\\assets\\index-BUYUzg_A.css",
+      "bytes": 24435,
+      "gzipBytes": 6905,
+      "sha256": "d4ab77697b9550fb76694fc389355299b9d552e8119e7a119d88acd2370210a3"
+    },
+    {
+      "path": "dist\\assets\\index-DuopgoSf.js",
+      "bytes": 377414,
+      "gzipBytes": 117230,
+      "sha256": "fb60029ec43231bf6b4aceb17667e1ee2dff6719843f9e1ee95970373b946b3a"
+    },
+    {
+      "path": "dist\\favicon.svg",
+      "bytes": 204,
+      "gzipBytes": 178,
+      "sha256": "4da54a7ac6e244543a13063b15bca9fabbe4abdb06ec2c2f32b775a7254af84d"
+    },
+    {
+      "path": "dist\\images\\project-preview.svg",
+      "bytes": 1157,
+      "gzipBytes": 543,
+      "sha256": "a09c3cadfe6826db5777d80751ae6c9647256941abe999bde4ecbbbc1ec448ab"
+    },
+    {
+      "path": "dist\\index.html",
+      "bytes": 1177,
+      "gzipBytes": 648,
+      "sha256": "c8f563551e1b148bb8abd863b9b58ed4d7766d2201b472a701cf3987aae07ca6"
+    },
+    {
+      "path": "dist\\robots.txt",
+      "bytes": 24,
+      "gzipBytes": 44,
+      "sha256": "a02fa07867bb5868c5f726f6620178daf8e0d0bcb8f5c1e2693ba72f0aec1fbb"
+    }
+  ],
+  "totalBytes": 404411,
+  "totalGzipBytes": 125548
+}
