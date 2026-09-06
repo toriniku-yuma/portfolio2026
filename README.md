@@ -61,7 +61,7 @@ pnpm run test:e2e --project chromium --project webkit --project android --projec
 ## 公開準備
 
 GitHub Pages用の [.github/workflows/deploy.yml](.github/workflows/deploy.yml) を用意しています。
-本原稿の準備後に `pnpm run build:release` を実行してください。
+現在のActionsはモックのまま試験公開できるよう `pnpm run build` を使います。本原稿の準備後は `pnpm run build:release` で確認し、ActionsのPages用ビルドも同コマンドへ変更してください。
 公開URL・OGP画像は未確定のため、架空の値を設定していません。
 
 Pagesが返すbase_pathをビルドへ渡すので、リポジトリ名をUIへ埋め込む必要はありません。

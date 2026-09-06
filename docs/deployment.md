@@ -34,7 +34,7 @@ Viteは任意のMarkdown文字列を自動で書き換える前提にしない�
 docsは実装資料の保存場所であり、Pagesの公開ディレクトリには指定しない。公開対象はdist。
 
 - 対象ブランチへのpushとworkflow_dispatchを入口とする。ブランチ名はリポジトリ作成時に確定する。
-- checkout、固定したNode・pnpmのセットアップ、pnpm install --frozen-lockfile、検証、pnpm run build:releaseの順に実行する。
+- checkout、固定したNode・pnpmのセットアップ、pnpm install --frozen-lockfile、検証、pnpm run buildの順に実行する。
 - pnpmのバージョンはpackage.jsonのpackageManager、依存はpnpm-lock.yamlに合わせる。セットアップActionは導入時の公式手順を確認して固定し、依存導入を二重実行しない。[pnpm公式CI手順](https://pnpm.io/continuous-integration)
 - frozen-lockfileで失敗したら依存宣言とlockfileの不整合を修正し、CIでlockfileを自動更新して通さない。[pnpm install公式](https://pnpm.io/cli/install)
 - actions/configure-pages、actions/upload-pages-artifact、actions/deploy-pagesを利用し、アップロード対象をdistに限定する。
@@ -44,9 +44,9 @@ docsは実装資料の保存場所であり、Pagesの公開ディレクトリ�
 - ActionsのバージョンまたはコミットSHAは導入時に確認して固定する。
 
 権限・アーティファクト・ジョブの接続は [GitHub公式カスタムワークフロー](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) を参照。
-ワークフローは .github/workflows/deploy.yml に実装済み。push / pull_requestで検証し、公開はリポジトリのdefault_branchへのpushまたはそのブランチでの手動実行に限定する。configure-pagesのbase_pathをVITE_BASE_PATHへ渡してreleaseビルドと本番E2Eを実施する。mock原稿が残る間は公開工程が失敗する。
+ワークフローは .github/workflows/deploy.yml に実装済み。push / pull_requestで検証し、公開はリポジトリのdefault_branchへのpushまたはそのブランチでの手動実行に限定する。configure-pagesのbase_pathをVITE_BASE_PATHへ渡して通常ビルドと本番E2Eを実施する。2026-09-07からモックのまま試験公開できるようbuildを使用する。mock属性は書き換えない。本原稿へ差し替えたらPages用ビルドをbuild:releaseへ変更する。
 
-## 公開前チェック
+## 本原稿の正式公開前チェック
 
 - [verification.md](verification.md)の公開条件を満たす。原稿のmockは全件false、仮URL・仮文言を除去する。
 - 経歴、画像、個人情報、連絡先、共同制作の担当範囲を公開してよいか確認する。
@@ -63,7 +63,7 @@ SNSプレビューで本文や個別作例の動的OGPまで保証しない。
 
 1. 対象リポジトリ、公開ブランチ、公開URL、baseを確定する。
 2. 確定したNode・pnpm環境でpnpm install --frozen-lockfileを実行する。
-3. lint、型検査、原稿テスト、E2E、build:releaseを実行する。
+3. lint、型検査、原稿テスト、E2E、buildを実行する。本原稿の正式公開時はbuild:releaseを使用する。
 4. pnpm run previewで公開時と同じbase配下のdistを確認する。Pages固有の配信確認は公開後にも行う。
 5. PagesのSourceとワークフローを設定し、正式な公開作業の依頼範囲に従って対象ブランチのpushまたは手動実行で公開する。
 6. Actionsの成功と公開URLを確認し、トップ、#idの直接アクセス、更新、戻る・進む、JS/CSS/画像、印刷、外部デモを確認する。

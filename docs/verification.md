@@ -33,6 +33,8 @@ PlaywrightのChromium / Firefox / WebKit、Android相当・iPhone相当で確認
 
 ## 公開前
 
+モックでの試験公開は通常のbuildとPagesのbaseでのE2Eを使用する。build:releaseのモック拒否は維持し、以下は本原稿の正式公開条件とする。
+
 本文・スキル数値・実績・画像・リンクを実データへ差し替え、mock:falseとしたbuild:releaseを検証する。GitHub Pagesの実際のbaseで画像・直接ハッシュ・更新・履歴・リンク到達を確認する。公開後の配信性能はローカル実測と分ける。
 
 検証記録は[一覧](verification-results/README.md)を参照。各記録は実施時点の実装に対する結果であり、現在の仕様の代わりにはしない。

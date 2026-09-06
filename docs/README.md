@@ -21,6 +21,7 @@
 ## 初期範囲
 
 - React + TypeScript + Tailwind CSS + Vite。SSRを使わない静的SPA。依存管理とコマンド実行はpnpmに統一する。
+- 試験公開はモック原稿を維持した通常buildを使用する。本原稿の正式公開前はbuild:releaseでモックが残っていないことを確認する。
 - 公開先はGitHub Pages。GitHub Actionsでビルドしたdistを配信する（2026-09-06のユーザー訂正を反映）。
 - トップページとハッシュアンカーのみ。ナビは一覧内のセクションへ移動する。
 - 本文はMarkdownを参照し、JSONにはメタデータだけを生成する。実行時のポーリングを行わない。
