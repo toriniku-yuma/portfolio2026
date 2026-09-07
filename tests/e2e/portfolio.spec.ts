@@ -46,16 +46,28 @@ test('B案を採用し、比較UIを除去、アスタリスクを表示', async
   await expect(page.getByText('THINK. BUILD. REPEAT.')).toBeVisible();
 });
 
-test('見出しが画面の下端に来ただけでは開始せず、内側に入って開始', async ({ page }) => {
+test('フェードと目次が同じ位置で切り替わり、演出中も選択を維持する', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 700 });
   await page.goto('./');
+  // Resize after mounting to verify that the observer follows the new viewport.
+  await page.setViewportSize({ width: 1440, height: 900 });
   const target = page.locator('[data-content-id="skills"]');
-  await target.evaluate(element => scrollBy(0, element.getBoundingClientRect().top - innerHeight + 50));
+  const selected = page.locator('nav a[aria-current="location"]');
+  await target.evaluate(element => scrollBy(0, Math.ceil(element.getBoundingClientRect().top - innerHeight * .65 - 10)));
   await page.waitForTimeout(200);
   await expect(target).not.toHaveAttribute('data-seen', 'true');
   await expect(target).toHaveCSS('opacity', '0');
-  await page.evaluate(() => scrollBy(0, Math.min(200, innerHeight * .25) + 80));
+  await expect(selected).toHaveAttribute('href', '#career-01');
+  await page.evaluate(() => scrollBy(0, 12));
   await expect(target).toHaveAttribute('data-animated', 'true');
-  await expect(page.locator('#skills')).toBeInViewport();
+  await expect(selected).toHaveAttribute('href', '#skills');
+  // A tiny scroll during translateY must not switch back to the previous item.
+  await page.evaluate(() => scrollBy(0, 1));
+  await expect(selected).toHaveAttribute('href', '#skills');
+  await expect(target).not.toHaveAttribute('data-animated', 'true');
+  await page.evaluate(() => scrollBy(0, -20));
+  await expect(selected).toHaveAttribute('href', '#career-01');
+  await expect(target).toHaveCSS('opacity', '1');
 });
 
 test('アンカー、履歴、同じリンク、初期ハッシュ', async ({ page }) => {
@@ -91,9 +103,15 @@ test('幅320〜1440px、長文と画像が横にはみ出さない', async ({ pa
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('./');
   await page.locator('[data-content-id="profile"] p').first().evaluate(element => { element.textContent = 'https://example.com/' + 'long-path'.repeat(80); });
-  for (const width of [320, 375, 768, 1024, 1440]) {
+  for (const width of [320, 375, 768, 1024, 1279, 1280, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    const sidebar = page.locator('#related-links');
+    const footerLinks = page.locator('footer section');
+    await expect(sidebar).toBeVisible({ visible: width >= 1280 });
+    await expect(footerLinks).toBeVisible({ visible: width < 1280 });
+    expect(await footerLinks.locator('a').evaluateAll(links => links.map(link => link.href)))
+      .toEqual(await sidebar.locator('a').evaluateAll(links => links.map(link => link.href)));
   }
   await page.locator('img').scrollIntoViewIfNeeded();
   await expect.poll(() => page.locator('img').evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
@@ -130,16 +148,22 @@ test('スクロールで目次が追従し、末尾・逆方向・先頭でも�
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('./');
   const selected = page.locator('nav a[aria-current="location"]');
+  await expect(selected).toHaveAttribute('href', '#profile');
+  const career = page.locator('[data-content-id="career-01"]');
+  for (const offset of [10, 0, -10, 10]) {
+    await career.evaluate((element, offset) => scrollBy(0, Math.ceil(element.getBoundingClientRect().top - (innerHeight - Math.round(innerHeight * .35)) - offset)), offset);
+    await expect(selected).toHaveAttribute('href', offset > 0 ? '#profile' : '#career-01');
+  }
   for (const id of ['profile', 'career-01', 'skills']) {
-    await page.locator(`[id="${id}"]`).evaluate(element => element.scrollIntoView());
+    await page.locator(`[data-content-id="${id}"]`).evaluate(element => scrollBy(0, Math.ceil(element.getBoundingClientRect().top - (innerHeight - Math.round(innerHeight * .35)))));
     await expect(selected).toHaveAttribute('href', '#' + id);
   }
   await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
   await expect(selected).toHaveAttribute('href', '#contact');
-  await page.locator('#career-01').evaluate(element => element.scrollIntoView());
+  await page.locator('[data-content-id="career-01"]').evaluate(element => scrollBy(0, Math.ceil(element.getBoundingClientRect().top - innerHeight * .65)));
   await expect(selected).toHaveAttribute('href', '#career-01');
   await page.evaluate(() => scrollTo(0, 0));
-  await expect(selected).toHaveCount(0);
+  await expect(selected).toHaveAttribute('href', '#profile');
   expect(new URL(page.url()).hash).toBe('');
 });
 
@@ -151,7 +175,7 @@ test('SPの目次は未選択、PCへの幅変更で現在位置を選択する'
   await expect(page.locator('#career-01')).toBeInViewport();
   await expect(selected).toHaveCount(0);
   await page.setViewportSize({ width: 1024, height: 900 });
-  await page.locator('#skills').evaluate(element => element.scrollIntoView());
+  await page.locator('[data-content-id="skills"]').evaluate(element => scrollBy(0, Math.ceil(element.getBoundingClientRect().top - innerHeight * .65)));
   await expect(selected).toHaveAttribute('href', '#skills');
   await page.setViewportSize({ width: 1023, height: 900 });
   await expect(selected).toHaveCount(0);
@@ -190,6 +214,7 @@ test('目次の読み込み演出と選択色、トップ下の罫線と余白',
   expect(await navigation.evaluate(element => getComputedStyle(element).animationName)).toBe('page-enter');
   const selectedLink = navigation.getByRole('link', { name: 'これまでの歩み' });
   await navigation.evaluate(element => Promise.all(element.getAnimations().map(animation => animation.finished)));
+  await page.locator('[data-content-id="career-01"]').evaluate(element => scrollBy(0, Math.ceil(element.getBoundingClientRect().top - innerHeight * .65)));
   await expect(selectedLink).toHaveAttribute('aria-current', 'location');
   // Move the pointer without the automation's scrollIntoView changing the reading position.
   const bounds = (await selectedLink.boundingBox())!;

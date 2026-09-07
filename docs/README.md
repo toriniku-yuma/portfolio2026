@@ -59,10 +59,18 @@ Node 26.8.1、pnpm 10.28.2と依存を固定した。最新版から互換性の
 - 各セクションは初期透明から画面内へ入った初回だけ表示する。再訪では再演出しない。
 - 目次の選択はスクロール位置に追従し、選択中の緑色はホバーでも維持する。
 - 内部リンクはsmooth移動。目次だけ下線を右へ伸ばし、それ以外は400msでopacityを1→0.8へ変える。全リンクにAppLinkを使い、reduceに対応する。
-- 関連リンク欄は1280px以上で本文の右列に表示し、それ未満では非表示。本文のリンクは残す。
+- 外部リンク欄は1280px以上で本文の右列、それ未満ではフッター上段に折り返し可能な横並びで表示する。同じリンクデータを使い、本文のリンクも残す。
 - スキルバーの名前と値はMarkdownのYAMLで編集する。現在の数値はユーザー承認のモック。
 - TailwindのユーティリティをJSXに記述する。テーマ・Markdown・独自演出のCSSだけをindex.cssにまとめ、Pandaの依存・設定・生成物は使用しない。
 - 分かりやすい変数名と改行を使い、アイコンはLucideに統一する。
+
+## Windows SSHでの依存関係
+
+`.npmrc` の `node-linker=hoisted` で依存関係を配置する。Windows SSH環境でpnpmのジャンクション経由の参照が拒否されたため、このプロジェクトではhoisted配置を使用する。通常の導入は `pnpm install --frozen-lockfile`、起動は `pnpm dev`。
+
+旧配置から変更するときは開発サーバーを停止し、既存の `node_modules` を退避してからインストールする。名前変更がアクセス拒否になる場合、VS CodeのTypeScriptサーバーがフォルダーを保持していないか確認する。退避先は `.repair-backup/node_modules` とする。node_modulesという名前を保つことでGit・ESLint・Viteの監視対象から除外できる。Windowsの保護機能やアクセス権は変更しない。
+
+2026-09-07の修復確認：Node 26.8.1 / pnpm 10.28.2。`pnpm install --frozen-lockfile`、build、lint、原稿テスト8件が成功。Playwright専用Chromiumは未導入のため、`$env:E2E_CHANNEL='msedge'` を指定した `pnpm exec playwright test --project=chromium` で13件成功。`pnpm dev --port 5173 --strictPort` の起動とHTTP 200を確認した。Firefox / WebKitは今回未実施。旧依存フォルダーは `.repair-backup/node_modules` に保存。
 
 ## 改修・検証の履歴
 

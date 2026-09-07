@@ -2,6 +2,13 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import type { AnimationEvent, MouseEvent } from 'react';
 import { ids } from '../content/data';
 
+// 画面下端からの比率（0〜1未満）。大きくするとフェード・目次の切り替え位置が上がる。
+const REVEAL_BOTTOM_RATIO = 0.35;
+
+function revealInset() {
+  return Math.round(innerHeight * REVEAL_BOTTOM_RATIO);
+}
+
 function hashId(hash: string) {
   try {
     const id = decodeURIComponent(hash.slice(1));
@@ -58,7 +65,7 @@ export function useDisplay() {
   }, []);
 
   useEffect(() => {
-    const headings = ids.map((id) => document.getElementById(id)!);
+    const cards = ids.map((id) => document.querySelector<HTMLElement>(`[data-content-id="${id}"]`)!);
     let scrollFrame = 0;
 
     const updateSelection = () => {
@@ -68,11 +75,15 @@ export function useDisplay() {
         return;
       }
 
-      const readingLine = Math.min(200, innerHeight * 0.25);
-      let currentId = '';
+      const readingLine = innerHeight - revealInset();
+      let currentId = ids[0] || '';
 
-      for (const heading of headings) {
-        if (heading.getBoundingClientRect().top <= readingLine) currentId = heading.id;
+      for (const card of cards) {
+        // Ignore the entrance animation's translation when tracking the reading position.
+        const translation = new DOMMatrixReadOnly(getComputedStyle(card).transform).m42;
+        if (card.getBoundingClientRect().top - translation <= readingLine) {
+          currentId = card.dataset.contentId!;
+        }
       }
 
       // The last section may be too short to reach the reading line.
@@ -108,23 +119,25 @@ export function useDisplay() {
         if (animate && !media.matches) element.dataset.animated = 'true';
       }
     };
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          reveal(entry.target as HTMLElement, true);
-          observer.unobserve(entry.target);
-        }
-      },
-      {
-        threshold: 0,
-        rootMargin:
-          '0px 0px -' + Math.min(200, Math.round(innerHeight * 0.25)) + 'px 0px',
-      },
-    );
-    document
-      .querySelectorAll('[data-content-id]')
-      .forEach((element) => observer.observe(element));
+    let observer: IntersectionObserver;
+    const observeCards = () => {
+      observer?.disconnect();
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            reveal(entry.target as HTMLElement, true);
+            observer.unobserve(entry.target);
+          }
+        },
+        { threshold: 0, rootMargin: `0px 0px -${revealInset()}px 0px` },
+      );
+      document.querySelectorAll<HTMLElement>('[data-content-id]').forEach((element) => {
+        if (!seen.current.has(element.dataset.contentId!)) observer.observe(element);
+      });
+    };
+    observeCards();
+    window.addEventListener('resize', observeCards);
     const revealAll = () => {
       document.querySelectorAll<HTMLElement>('[data-content-id]').forEach((element) => {
         reveal(element, false);
@@ -160,6 +173,7 @@ export function useDisplay() {
     media.addEventListener('change', motion);
     return () => {
       observer.disconnect();
+      window.removeEventListener('resize', observeCards);
       window.removeEventListener('popstate', historyMove);
       window.removeEventListener('hashchange', historyMove);
       window.removeEventListener('beforeprint', revealAll);

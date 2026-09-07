@@ -30,7 +30,7 @@
 ## スクロールと一度限りの演出
 
 旧仕様の250msタイマー・段階的DOM追加・全件表示ボタンは廃止。
-全文は初回からDOMに置くが、未閲覧カードはopacity:0で待機する。display:none・visibility:hiddenは使わず、レイアウト領域と検索・読み上げ対象を維持する。IntersectionObserverはカード自体を観測し、画面下端から高さの25％（最大200px）内側に入った初回にdata-seenとdata-animatedを付ける。カード全体を観測するため、長文の途中へ検索で移動した場合にも表示できる。
+全文は初回からDOMに置くが、未閲覧カードはopacity:0で待機する。display:none・visibility:hiddenは使わず、レイアウト領域と検索・読み上げ対象を維持する。IntersectionObserverはカード自体を観測し、画面下端から高さの35％内側に入った初回にdata-seenとdata-animatedを付ける。画面の高さが変わったら同じ比率でobserverを再設定する。カード全体を観測するため、長文の途中へ検索で移動した場合にも表示できる。
 
 750msのopacity:0→1とtranslateY(36px)→0を実行し、終了時はdata-animatedだけを削除する。data-seenと上位Setは再読み込みまで保持し、再訪で点滅・再マウントを起こさない。初期表示のopacityとアニメーションの開始値を揃える。
 
@@ -46,7 +46,7 @@ prefers-reduced-motion時はCSSとJS双方で全カードを即時表示し、�
 
 全a要素はAppLinkを使用する。Markdownのaもreact-markdownのcomponents対応でAppLinkへ渡し、構文木nodeはDOMへ転送しない。通常リンクは400msのease-in-outでopacityを1→0.8へ変化させる。目次だけunderline属性を指定し、navigation-link-motionで下線を右へ伸ばす。hoverとfocus-visibleに同じ演出を適用し、既存のフォーカス枠を維持する。reduce時は遷移を止める。
 
-目次のaria-currentは現在のスクロール位置から決める。画面上端から高さの25％（最大200px）の基準線を通過した最後の見出しを選択する。末尾までスクロールした場合は最後の項目を選択し、最初の見出しより上では未選択にする。scroll・resizeをrequestAnimationFrameにまとめて処理し、解除時にフレームとリスナーを破棄する。通常スクロールではURL・履歴・フォーカスを変更しない。
+目次のaria-currentは現在のスクロール位置から決める。カード上端がフェード開始線（画面上端から65％）に達した最後の項目を選択する。先頭ではプロフィールを選択し、次のカード上端がフェード開始線に達するまで維持する。末尾までスクロールした場合は最後の項目を選択する。調整値はsrc/hooks/useDisplay.tsのREVEAL_BOTTOM_RATIO（現在0.35）に集約する。画面下端からの比率で、値を大きくすると開始位置が上がる。フェードと目次で基準線を共有し、目次の位置計算から演出のtranslateYを除いて選択の揺れを防ぐ。scroll・resizeをrequestAnimationFrameにまとめて処理し、解除時にフレームとリスナーを破棄する。通常スクロールではURL・履歴・フォーカスを変更しない。
 
 トップの文字はpage-enterで上から下へ20px移動しながら、80msずつずらしてフェード表示する。アスタリスク背景のドットは8秒で48px横へ動く。停止ボタンは置かない。reduce設定時はドット・文字・リンクの動きを抑制する。
 

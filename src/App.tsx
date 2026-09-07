@@ -4,6 +4,8 @@ import Header from './components/Header';
 import Navigation from './components/Navigation';
 import Timeline from './components/Timeline';
 import RelatedLinks from './components/RelatedLinks';
+import { related } from './content/data';
+import { renderLink } from './components/render';
 
 export default function App() {
   return (
@@ -23,6 +25,10 @@ export default function App() {
         <RelatedLinks />
       </div>
       <footer className="flex flex-wrap justify-between gap-5 border-t border-solid border-line py-8 text-muted text-xs">
+        <section className="w-full xl:hidden print:hidden" aria-label="外部リンク">
+          <h2 className="text-xs tracking-widest mb-3">外部リンク</h2>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">{related.map(renderLink)}</ul>
+        </section>
         <span>Kawakami Shunki / 川上駿季</span>
         <span>つくる、考える、その記録。</span>
         <AppLink className="inline-flex items-center gap-2" href="#">
